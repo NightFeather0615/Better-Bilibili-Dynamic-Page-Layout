@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bilibili 動態套用 YouTube 排版
 // @namespace    https://github.com/NightFeather0615
-// @version      1.1
+// @version      1.2
 // @license      MPL-2.0
 // @description  將 Bilibili 動態頁面排版轉換為 YouTube 訂閱內容排版
 // @author       NightFeather
@@ -240,17 +240,24 @@
     }
   }
 
-  function clickVideoTab() {
+  function checkVideoTab() {
+    var isVideo = location.href.indexOf('tab=video') > -1;
+    
+    if (isVideo) return true;
+    
     var tabs = document.querySelectorAll('.bili-dyn-list-tabs__item');
+    
     for (var i = 0; i < tabs.length; i++) {
       if (tabs[i].textContent.trim() === '视频投稿') {
         if (!tabs[i].classList.contains('active')) {
           tabs[i].click();
           return true;
         }
+        
         return false;
       }
     }
+    
     return false;
   }
 
@@ -333,11 +340,7 @@
     applyStructure();
     removeRedundantElements();
     transformAll();
-
-    var isVideo = location.href.indexOf('tab=video') > -1;
-    if (!isVideo) {
-      clickVideoTab();
-    }
+    checkVideoTab();
 
     // Observe main's feed for new items
     var mainFeed = document.querySelector('main .bili-dyn-list__items');
@@ -352,6 +355,7 @@
       applyStructure();
       removeRedundantElements();
       transformAll();
+      checkVideoTab();
     }).observe(document.querySelector('.bili-dyn-home--member') || document.body, {
       childList: true, subtree: true, attributes: false
     });

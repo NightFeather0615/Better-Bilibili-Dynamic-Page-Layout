@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bilibili 動態套用 YouTube 排版
 // @namespace    https://github.com/NightFeather0615
-// @version      1.3
+// @version      1.4
 // @license      MPL-2.0
 // @description  將 Bilibili 動態頁面排版轉換為 YouTube 訂閱內容排版
 // @author       NightFeather
@@ -52,9 +52,16 @@
     + "}"
     + "main .bili-dyn-list__item {"
     + " background:transparent; border-radius:10px;"
-    + " overflow:hidden; transition:transform .12s ease; list-style:none;"
+    + " list-style:none;"
     + "}"
-    + "main .bili-dyn-list__item:hover { transform:translateY(-2px); }"
+    // Dynamic color glow (--hover-color set by JS)
+    + ".yt-card-link { position:relative; overflow:visible; }"
+    + ".yt-card-link::before {"
+    + " content:''; position:absolute; inset:-8px; border-radius:16px;"
+    + " background:var(--hover-color,transparent);"
+    + " opacity:0; transition:opacity .18s ease-in-out; z-index:-1; pointer-events:none;"
+    + "}"
+    + ".yt-card-link:hover::before { opacity:0.35; }"
     + "main .bili-dyn-list-tabs { margin-bottom:12px; display: none; }"
     + "main .bili-dyn-publishing { display:none !important; }"
     // Sidebar items
@@ -160,6 +167,40 @@
     upList.appendChild(sidebar);
   }
 
+  function getDominantColor(img) {
+    try {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      var w = img.naturalWidth || 320;
+      var h = img.naturalHeight || 180;
+      canvas.width = w;
+      canvas.height = h;
+      ctx.drawImage(img, 0, 0, w, h);
+      var data = ctx.getImageData(0, 0, w, h).data;
+      var r = 0, g = 0, b = 0, count = 0;
+      for (var i = 0; i < data.length; i += 40) {
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
+        count++;
+      }
+      r = Math.round(r / count);
+      g = Math.round(g / count);
+      b = Math.round(b / count);
+      // Darken if too bright so glow stays visible and text readable
+      var brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      if (brightness > 100) {
+        var scale = 100 / brightness;
+        r = Math.round(r * scale);
+        g = Math.round(g * scale);
+        b = Math.round(b * scale);
+      }
+      return 'rgb(' + r + ',' + g + ',' + b + ')';
+    } catch (e) {
+      return '';
+    }
+  }
+
   function transformCard(item) {
     if (item.dataset.yt) return;
 
@@ -204,8 +245,20 @@
     thumb.className = 'yt-thumb';
     if (thumbSrc) {
       var img = document.createElement('img');
+      img.crossOrigin = 'anonymous';
       img.src = thumbSrc;
       img.alt = titleText;
+      img.addEventListener('load', function () {
+        var color = getDominantColor(img);
+        if (color) {
+          cardLink.style.setProperty('--hover-color', color);
+        }
+      });
+      img.addEventListener('error', function () {
+        // Retry without crossOrigin (CORS might fail)
+        img.crossOrigin = '';
+        img.src = thumbSrc;
+      });
       thumb.appendChild(img);
     }
     if (duration) {

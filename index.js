@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bilibili 動態套用 YouTube 排版
 // @namespace    https://github.com/NightFeather0615
-// @version      1.2
+// @version      1.3
 // @license      MPL-2.0
 // @description  將 Bilibili 動態頁面排版轉換為 YouTube 訂閱內容排版
 // @author       NightFeather
@@ -18,6 +18,10 @@
     ".bili-dyn-home--member {"
     + " display:flex !important; flex-direction:row !important;"
     + " margin:0 auto; padding:16px 24px; gap:24px;"
+    + "}"
+    // Hide top bar
+    + "section:has(.bili-dyn-publishing) {"
+    + " display: none !important;"
     + "}"
     // Background
     + "html.bili_dark #app {"
@@ -38,6 +42,9 @@
     // Hide right sidebar
     + "aside.right { display:none !important; }"
     // Feed grid in main
+    + "main .bili-dyn-list {"
+    + " margin-top: 0px !important;"
+    + "}"
     + "main .bili-dyn-list__items {"
     + " display:grid !important;"
     + " grid-template-columns:repeat(auto-fill,minmax(498px,1fr)) !important;"
@@ -48,7 +55,7 @@
     + " overflow:hidden; transition:transform .12s ease; list-style:none;"
     + "}"
     + "main .bili-dyn-list__item:hover { transform:translateY(-2px); }"
-    + "main .bili-dyn-list-tabs { margin-bottom:12px; }"
+    + "main .bili-dyn-list-tabs { margin-bottom:12px; display: none; }"
     + "main .bili-dyn-publishing { display:none !important; }"
     // Sidebar items
     + ".yt-sidebar-title {"

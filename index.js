@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bilibili 動態套用 YouTube 排版
 // @namespace    https://github.com/NightFeather0615
-// @version      1.4
+// @version      1.4.1
 // @license      MPL-2.0
 // @description  將 Bilibili 動態頁面排版轉換為 YouTube 訂閱內容排版
 // @author       NightFeather
@@ -33,14 +33,18 @@
     + " display:flex !important; flex-direction:column !important; gap:12px;"
     + "}"
     // Hide user info (first section in aside.left)
-    + "aside.left > section:first-child { display:none !important; }"
+    + "aside.left > section:first-child {"
+    + " display:none !important;"
+    + "}"
     // Main feed area
     + "main {"
     + " flex:1 !important; min-width:0 !important;"
     + " display:block !important; width:auto !important;"
     + "}"
     // Hide right sidebar
-    + "aside.right { display:none !important; }"
+    + "aside.right {"
+    + " display:none !important;"
+    + "}"
     // Feed grid in main
     + "main .bili-dyn-list {"
     + " margin-top: 0px !important;"
@@ -55,15 +59,23 @@
     + " list-style:none;"
     + "}"
     // Dynamic color glow (--hover-color set by JS)
-    + ".yt-card-link { position:relative; overflow:visible; }"
+    + ".yt-card-link {"
+    + " position:relative; overflow:visible;"
+    + "}"
     + ".yt-card-link::before {"
     + " content:''; position:absolute; inset:-8px; border-radius:16px;"
     + " background:var(--hover-color,transparent);"
     + " opacity:0; transition:opacity .18s ease-in-out; z-index:-1; pointer-events:none;"
     + "}"
-    + ".yt-card-link:hover::before { opacity:0.35; }"
-    + "main .bili-dyn-list-tabs { margin-bottom:12px; display: none; }"
-    + "main .bili-dyn-publishing { display:none !important; }"
+    + ".yt-card-link:hover::before {"
+    + " opacity:0.35;"
+    + "}"
+    + "main .bili-dyn-list-tabs {"
+    + " margin-bottom:12px; display: none;"
+    + "}"
+    + "main .bili-dyn-publishing {"
+    + " display:none !important;"
+    + "}"
     // Sidebar items
     + ".yt-sidebar-title {"
     + " font-size:15px; font-weight:600;"
@@ -74,12 +86,16 @@
     + " padding:6px 12px; cursor:pointer; border-radius:8px;"
     + " text-decoration:none; color:var(--text1,#222); font-size:14px;"
     + "}"
-    + ".yt-sidebar-item:hover { background:var(--bg2,#f0f0f0); }"
+    + ".yt-sidebar-item:hover {"
+    + " background:var(--bg2,#f0f0f0);"
+    + "}"
     + ".yt-sidebar-avatar {"
     + " width:28px; height:28px; border-radius:50%; flex-shrink:0;"
     + " background:var(--bg3,#e0e0e0); overflow:hidden;"
     + "}"
-    + ".yt-sidebar-avatar img { width:100%; height:100%; object-fit:cover; }"
+    + ".yt-sidebar-avatar img {"
+    + " width:100%; height:100%; object-fit:cover;"
+    + "}"
     + ".yt-sidebar-name {"
     + " white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
     + "}"
@@ -91,7 +107,9 @@
     + " position:relative; width:100%; aspect-ratio:16/9;"
     + " overflow:hidden; background:#000; border-radius:10px;"
     + "}"
-    + ".yt-thumb img { width:100%; height:100%; object-fit:cover; }"
+    + ".yt-thumb img {"
+    + " width:100%; height:100%; object-fit:cover;"
+    + "}"
     + ".yt-duration {"
     + " position:absolute; bottom:6px; right:6px;"
     + " background:rgba(0,0,0,.8); color:#fff;"
@@ -99,7 +117,9 @@
     + " font-size:12px; font-weight:500; line-height:1.4;"
     + " pointer-events:none;"
     + "}"
-    + ".yt-info { padding:10px 12px 14px; }"
+    + ".yt-info {"
+    + " padding:10px 12px 14px;"
+    + "}"
     + ".yt-title {"
     + " font-size:1.04rem; font-weight:500; line-height:1.4; text-overflow: ellipsis;"
     + " margin:0 0 4px; display:-webkit-box;"

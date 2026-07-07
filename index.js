@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bilibili 動態套用 YouTube 排版
 // @namespace    https://github.com/NightFeather0615
-// @version      1.5
+// @version      1.6
 // @license      MPL-2.0
 // @description  將 Bilibili 動態頁面排版轉換為 YouTube 訂閱內容排版
 // @author       NightFeather
@@ -392,6 +392,12 @@
       var brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
       if (brightness > 100) {
         var scale = 100 / brightness;
+        r = Math.round(r * scale);
+        g = Math.round(g * scale);
+        b = Math.round(b * scale);
+      }
+      if (brightness < 50) {
+        var scale = 50 / brightness;
         r = Math.round(r * scale);
         g = Math.round(g * scale);
         b = Math.round(b * scale);
